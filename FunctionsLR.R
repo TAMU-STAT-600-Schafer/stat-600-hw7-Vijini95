@@ -65,6 +65,40 @@ LRMultiClass <- function(X, y, Xt, yt, numIter = 50, eta = 0.1, lambda = 1, beta
   
   ## Calculate corresponding pk, objective value f(beta_init), training error and testing error given the starting point beta_init
   ##########################################################################
+  error_train <- rep(0, numIter + 1) # training error
+  error_test <- rep(0, numIter + 1) #testing error
+  objective <- rep(0, numIter + 1) # initialize objective function
+  
+  # pk value for training data
+  #beta_init <- as.matrix(beta_init)
+  exp_Xb <- exp(X %*% beta_init) #intermediate storage of exp(Xb)
+  pk <- exp_Xb / (rowSums(exp_Xb)) #calculate corresponding pk
+  
+  # pk value for testing data
+  exp_Xtb <- exp(Xt %*% beta_init) #intermediate storage of exp(Xb)
+  pk_test <- exp_Xtb / (rowSums(exp_Xtb)) #calculate corresponding pk_test
+  
+  train_class <-  apply(pk, 1, which.max) - 1 #assign class for training with highest probability
+  #print(train_class)
+  error_train[1] <- 100 * mean(y != train_class) #get %error when class is not the true one for train
+  #print(error_train)
+  
+  test_class <-  apply(pk_test, 1, which.max) - 1 #assign class for testing with highest probability
+  #print(test_class)
+  error_test[1] <- 100 * mean(yt != test_class) #get %error when class is not the true one for test
+  #print(error_test)
+  
+  #indicator function
+  Y_list  <-  sort(unique(y)) #get the distinct Y's and sort them to get order
+  ind_train <-  matrix(0, nrow(X), length(Y_list)) #initialize empty matrix for indicator for Y
+  for (k in 1:length(Y_list)) {
+  # go through the beta obj and if Y is equal to the class indicator is 1
+  ind_train[Y_list[k] == y, k] = 1
+  }
+  #print(ind_train)
+  
+  # Calculate current objective value
+  objective[1] <-   (-sum(ind_train * log(pk)) + (lambda / 2) * sum(beta_init ^2))
   
   ## Newton's method cycle - implement the update EXACTLY numIter iterations
   ##########################################################################
