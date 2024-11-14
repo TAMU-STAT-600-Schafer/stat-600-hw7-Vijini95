@@ -55,6 +55,13 @@ LRMultiClass <- function(X, y, Xt, yt, numIter = 50, eta = 0.1, lambda = 1, beta
   }
   
   # Check whether beta_init is NULL. If NULL, initialize beta with p x K matrix of zeroes. If not NULL, check for compatibility of dimensions with what has been already supplied.
+  if (is.null(beta_init)) {
+    beta_init <- matrix(0, nrow = p, ncol = K)
+  }
+  if ((is.null(beta_init) == FALSE) &&
+      ((nrow(beta_init) != p) || ncol(beta_init) != K)) {
+    stop("Error: Check that the dimensions of beta are p x K.")
+  }
   
   ## Calculate corresponding pk, objective value f(beta_init), training error and testing error given the starting point beta_init
   ##########################################################################
