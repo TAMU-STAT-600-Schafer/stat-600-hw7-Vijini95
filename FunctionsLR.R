@@ -24,12 +24,15 @@ LRMultiClass <- function(X, y, Xt, yt, numIter = 50, eta = 0.1, lambda = 1, beta
   if (any(X[, 1] != 1)) {
     stop("Error: check that the first column of X is 1s.")
   }
-  
   # Check that the first column of Xt is 1s, if not - display appropriate message and stop execution.
   if (any(Xt[, 1] != 1)) {
     stop("Error: check that the first column of X test is 1s.")
   }
+  
   # Check for compatibility of dimensions between X and Y
+  if (n != length(y)) {
+    stop("Error: check that the dimensions of X and Y are compatible.")
+  }
   
   # Check for compatibility of dimensions between Xt and Yt
   
