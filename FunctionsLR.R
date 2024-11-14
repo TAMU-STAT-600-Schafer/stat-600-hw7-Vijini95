@@ -8,7 +8,7 @@
 # numIter - number of FIXED iterations of the algorithm, default value is 50
 # eta - learning rate, default value is 0.1
 # lambda - ridge parameter, default value is 1
-# beta_init - (optional) initial starting values of beta for the algorithm, should be p x K matrix 
+# beta_init - (optional) initial starting values of beta for the algorithm, should be p x K matrix
 
 ## Return output
 ##########################################################################
@@ -16,7 +16,14 @@
 # error_train - (numIter + 1) length vector of training error % at each iteration (+ starting value)
 # error_test - (numIter + 1) length vector of testing error % at each iteration (+ starting value)
 # objective - (numIter + 1) length vector of objective values of the function that we are minimizing at each iteration (+ starting value)
-LRMultiClass <- function(X, y, Xt, yt, numIter = 50, eta = 0.1, lambda = 1, beta_init = NULL){
+LRMultiClass <- function(X,
+                         y,
+                         Xt,
+                         yt,
+                         numIter = 50,
+                         eta = 0.1,
+                         lambda = 1,
+                         beta_init = NULL) {
   ## Check the supplied parameters as described. You can assume that X, Xt are matrices; y, yt are vectors; and numIter, eta, lambda are scalars. You can assume that beta_init is either NULL (default) or a matrix.
   ###################################
   # Check that the first column of X and Xt are 1s, if not - display appropriate message and stop execution.
@@ -37,7 +44,7 @@ LRMultiClass <- function(X, y, Xt, yt, numIter = 50, eta = 0.1, lambda = 1, beta
   # Check for compatibility of dimensions between Xt and Yt
   if (ntest != length(yt)) {
     stop("Error: check that the dimensions of Xtest and Ytest are compatible.")
-  } 
+  }
   
   # Check for compatibility of dimensions between X and Xt
   if (p != ncol(Xt)) {
@@ -92,23 +99,26 @@ LRMultiClass <- function(X, y, Xt, yt, numIter = 50, eta = 0.1, lambda = 1, beta
   Y_list  <-  sort(unique(y)) #get the distinct Y's and sort them to get order
   ind_train <-  matrix(0, nrow(X), length(Y_list)) #initialize empty matrix for indicator for Y
   for (k in 1:length(Y_list)) {
-  # go through the beta obj and if Y is equal to the class indicator is 1
-  ind_train[Y_list[k] == y, k] = 1
+    # go through the beta obj and if Y is equal to the class indicator is 1
+    ind_train[Y_list[k] == y, k] = 1
   }
   #print(ind_train)
   
   # Calculate current objective value
-  objective[1] <-   (-sum(ind_train * log(pk)) + (lambda / 2) * sum(beta_init ^2))
+  objective[1] <-   (-sum(ind_train * log(pk)) + (lambda / 2) * sum(beta_init ^
+                                                                      2))
   
   ## Newton's method cycle - implement the update EXACTLY numIter iterations
   ##########################################################################
   for (k in 1:numIter) {
     W <- pk * (1 - pk) # as given formula in the pdf
     
-  # Within one iteration: perform the update, calculate updated objective function and training/testing errors in %
+    # Within one iteration: perform the update, calculate updated objective function and training/testing errors in %
     # beta update
     for (j in 1:ncol(beta_init)) {
-      Hkk_inv  <- solve(crossprod(X, X * W[, j]) + (lambda * diag(rep(1, ncol(X))))) #X^T *W_k* X + lambda*I
+      Hkk_inv  <- solve(crossprod(X, X * W[, j]) + (lambda * diag(rep(1, ncol(
+        X
+      ))))) #X^T *W_k* X + lambda*I
       #print((Hkk_inv))
       #beta_k^(t+1) = beta_k^(t) + eta(Hkk_inv) *[X^T *pk *1(Y = k) + lambda*beta_k^(t)]
       beta_init[, j] <-  beta_init[, j] - eta * Hkk_inv %*% ((tX %*% (pk[, j] -
@@ -144,5 +154,12 @@ LRMultiClass <- function(X, y, Xt, yt, numIter = 50, eta = 0.1, lambda = 1, beta
   # error_train - (numIter + 1) length vector of training error % at each iteration (+ starting value)
   # error_test - (numIter + 1) length vector of testing error % at each iteration (+ starting value)
   # objective - (numIter + 1) length vector of objective values of the function that we are minimizing at each iteration (+ starting value)
-  return(list(beta = beta, error_train = error_train, error_test = error_test, objective =  objective))
+  return(
+    list(
+      beta = beta,
+      error_train = error_train,
+      error_test = error_test,
+      objective =  objective
+    )
+  )
 }
