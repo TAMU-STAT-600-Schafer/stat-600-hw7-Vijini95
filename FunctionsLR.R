@@ -40,6 +40,9 @@ LRMultiClass <- function(X, y, Xt, yt, numIter = 50, eta = 0.1, lambda = 1, beta
   } 
   
   # Check for compatibility of dimensions between X and Xt
+  if (p != ncol(Xt)) {
+    stop("Error: check that the dimensions of X and Xt are compatible.")
+  }
   
   # Check eta is positive
   
