@@ -102,9 +102,41 @@ LRMultiClass <- function(X, y, Xt, yt, numIter = 50, eta = 0.1, lambda = 1, beta
   
   ## Newton's method cycle - implement the update EXACTLY numIter iterations
   ##########################################################################
- 
+  for (k in 1:numIter) {
+    W <- pk * (1 - pk) # as given formula in the pdf
+    
   # Within one iteration: perform the update, calculate updated objective function and training/testing errors in %
-  
+    # beta update
+    for (j in 1:ncol(beta_init)) {
+      Hkk_inv  <- solve(crossprod(X, X * W[, j]) + (lambda * diag(rep(1, ncol(X))))) #X^T *W_k* X + lambda*I
+      #print((Hkk_inv))
+      #beta_k^(t+1) = beta_k^(t) + eta(Hkk_inv) *[X^T *pk *1(Y = k) + lambda*beta_k^(t)]
+      beta_init[, j] <-  beta_init[, j] - eta * Hkk_inv %*% ((tX %*% (pk[, j] -
+                                                                        ind_train[, j])) + lambda * beta_init[, j]) #damped newton's update
+      #print(beta_init[, j])
+    }
+    # pk value for training data
+    exp_Xb <- exp(X %*% beta_init) #intermediate storage of exp(Xb)
+    pk <- exp_Xb / (rowSums(exp_Xb)) #calculate corresponding pk
+    
+    # pk value for testing data
+    exp_Xtb <- exp(Xt %*% beta_init) #intermediate storage of exp(Xb)
+    pk_test <- exp_Xtb / (rowSums(exp_Xtb)) #calculate corresponding pk_test
+    
+    train_class <-  apply(pk, 1, which.max) - 1 #assign class for training with highest probability
+    #print(train_class)
+    error_train[k + 1] <- 100 * mean(y != train_class) #get %error when class is not the true one for train
+    #print(error_train)
+    
+    test_class <-  apply(pk_test, 1, which.max) - 1 #assign class for testing with highest probability
+    #print(test_class)
+    error_test[k + 1] <- 100 * mean(yt != test_class) #get %error when class is not the true one for test
+    #print(error_test)
+    objective[k + 1] <-   (-sum(ind_train * log(pk)) + (lambda / 2) * sum(beta_init ^
+                                                                            2))
+    # print(k)
+    # print(objective[k + 1])
+  }
   
   ## Return output
   ##########################################################################
