@@ -6,7 +6,10 @@
 # scale - magnitude for initialization of W_k (standard deviation of normal)
 # seed - specified seed to use before random normal draws
 initialize_bw <- function(p, hidden_p, K, scale = 1e-3, seed = 12345){
+  
   # [ToDo] Initialize intercepts as zeros
+  b1 <- rep(0, hidden_p)   # Hidden layer biases
+  b2 <- rep(0, K)          # Output layer biases
   
   # [ToDo] Initialize weights by drawing them iid from Normal
   # with mean zero and scale as sd
