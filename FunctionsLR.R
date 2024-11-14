@@ -50,6 +50,9 @@ LRMultiClass <- function(X, y, Xt, yt, numIter = 50, eta = 0.1, lambda = 1, beta
   }
   
   # Check lambda is non-negative
+  if (lambda < 0) {
+    stop("Error: lambda must be nonnegative! Change your value of lambda.")
+  }
   
   # Check whether beta_init is NULL. If NULL, initialize beta with p x K matrix of zeroes. If not NULL, check for compatibility of dimensions with what has been already supplied.
   
