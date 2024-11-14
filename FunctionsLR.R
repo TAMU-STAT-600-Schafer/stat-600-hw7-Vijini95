@@ -45,6 +45,9 @@ LRMultiClass <- function(X, y, Xt, yt, numIter = 50, eta = 0.1, lambda = 1, beta
   }
   
   # Check eta is positive
+  if (eta <= 0) {
+    stop("Error: Eta must be positive! Change your value of eta.")
+  }
   
   # Check lambda is non-negative
   
