@@ -89,6 +89,8 @@ one_pass <- function(X, y, K, W1, b1, W2, b2, lambda){
   
   # Get gradient for hidden, and 1st layer W1, b1 (use lambda as needed)
   dA1 <- dscores %*% t(W2) #Gradient w.r.t. Hidden Layer Activations
+  dZ1 <- dA1
+  dZ1[Z1 <= 0] <- 0 #Apply derivative of ReLU
   
   # Return output (loss and error from forward pass,
   # list of gradients from backward pass)
