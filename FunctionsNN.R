@@ -48,7 +48,7 @@ loss_grad_scores <- function(y, scores, K){
   
   # [ToDo] Calculate gradient of loss with respect to scores (output)
   # when lambda = 0
-  # grad = ...
+  grad <- (probs - y_one_hot) / n
   
   # Return loss, gradient and misclassification error on training (in %)
   return(list(loss = loss, grad = grad, error = error))
