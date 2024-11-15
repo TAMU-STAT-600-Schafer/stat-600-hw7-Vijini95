@@ -82,7 +82,10 @@ one_pass <- function(X, y, K, W1, b1, W2, b2, lambda){
   loss <- loss_out$loss
   error <- loss_out$error
   dscores <- loss_out$grad
+  
   # Get gradient for 2nd layer W2, b2 (use lambda as needed)
+  dW2 <- t(A1) %*% dscores + lambda * W2
+  db2 <- colSums(dscores)
   
   # Get gradient for hidden, and 1st layer W1, b1 (use lambda as needed)
   
