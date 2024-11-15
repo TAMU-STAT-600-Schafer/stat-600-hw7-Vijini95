@@ -88,6 +88,7 @@ one_pass <- function(X, y, K, W1, b1, W2, b2, lambda){
   db2 <- colSums(dscores)
   
   # Get gradient for hidden, and 1st layer W1, b1 (use lambda as needed)
+  dA1 <- dscores %*% t(W2) #Gradient w.r.t. Hidden Layer Activations
   
   # Return output (loss and error from forward pass,
   # list of gradients from backward pass)
