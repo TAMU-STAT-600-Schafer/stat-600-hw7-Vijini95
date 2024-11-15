@@ -71,8 +71,10 @@ one_pass <- function(X, y, K, W1, b1, W2, b2, lambda){
   
   # ReLU
   A1 <- pmax(0, Z1)
+  
   # From hidden to output scores
- 
+  scores <- A1 %*% W2 + matrix(b2, nrow = nrow(A1), ncol = length(b2), byrow = TRUE)
+  
   
   # [ToDo] Backward pass
   # Get loss, error, gradient at current scores using loss_grad_scores function
