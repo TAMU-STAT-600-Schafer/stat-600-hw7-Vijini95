@@ -70,7 +70,7 @@ one_pass <- function(X, y, K, W1, b1, W2, b2, lambda){
   Z1 <- X %*% W1 + matrix(b1, nrow = nrow(X), ncol = length(b1), byrow = TRUE)
   
   # ReLU
-  
+  A1 <- pmax(0, Z1)
   # From hidden to output scores
  
   
