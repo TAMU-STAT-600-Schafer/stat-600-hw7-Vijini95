@@ -37,8 +37,9 @@ loss_grad_scores <- function(y, scores, K){
   
   scores_exp <- exp(scores - apply(scores, 1, max))
   probs <- scores_exp / rowSums(scores_exp)
+  
   # [ToDo] Calculate loss when lambda = 0
-  # loss = ...
+  loss <- - (1 / n) * sum(y_one_hot * log(probs + 1e-15))  # Add small epsilon to avoid log(0)
   
   # [ToDo] Calculate misclassification error rate (%)
   # when predicting class labels using scores versus true y
