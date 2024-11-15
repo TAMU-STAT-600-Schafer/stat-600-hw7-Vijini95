@@ -43,7 +43,8 @@ loss_grad_scores <- function(y, scores, K){
   
   # [ToDo] Calculate misclassification error rate (%)
   # when predicting class labels using scores versus true y
-  # error = ...
+  predicted_classes <- apply(scores, 1, which.max) - 1  # Subtract 1 to match class labels from 0
+  error <- 100 * mean(predicted_classes != y)
   
   # [ToDo] Calculate gradient of loss with respect to scores (output)
   # when lambda = 0
