@@ -28,6 +28,15 @@ initialize_bw <- function(p, hidden_p, K, scale = 1e-3, seed = 12345){
 # K - number of classes
 loss_grad_scores <- function(y, scores, K){
   
+  #Create a matrix where each row corresponds to a sample, and columns represent classes.
+  n <- length(y)
+  y_one_hot <- matrix(0, nrow = n, ncol = K)
+  for (i in 1:n) {
+    y_one_hot[i, y[i] + 1] <- 1  # R indices start from 1
+  }
+  
+  scores_exp <- exp(scores - apply(scores, 1, max))
+  probs <- scores_exp / rowSums(scores_exp)
   # [ToDo] Calculate loss when lambda = 0
   # loss = ...
   
