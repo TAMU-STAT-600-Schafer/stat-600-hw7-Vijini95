@@ -140,9 +140,12 @@ evaluate_error <- function(Xval, yval, W1, b1, W2, b2) {
   # [ToDo] Forward pass to get scores on validation data
   Z1_val <- Xval %*% W1 + matrix(b1, nrow = nrow(Xval), ncol = length(b1), byrow = TRUE) #Compute Hidden Layer Pre-Activation
   A1_val <- pmax(0, Z1_val) #Apply ReLU Activation to Hidden Layer
+  scores_val <- A1_val %*% W2 + matrix(b2, nrow = nrow(A1_val), ncol = length(b2), byrow = TRUE) #Compute Output Layer Scores
   
   # [ToDo] Evaluate error rate (in %) when
   # comparing scores-based predictions with true yval
+  predicted_classes_val <- apply(scores_val, 1, which.max) - 1  # Adjust for zero-based labels
+  error <- 100 * mean(predicted_classes_val != yval)
   
   return(error)
 }
