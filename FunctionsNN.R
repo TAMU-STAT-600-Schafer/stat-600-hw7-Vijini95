@@ -138,6 +138,7 @@ one_pass <- function(X, y, K, W1, b1, W2, b2, lambda) {
 # b2 - a vector of size K of intercepts
 evaluate_error <- function(Xval, yval, W1, b1, W2, b2) {
   # [ToDo] Forward pass to get scores on validation data
+  Z1_val <- Xval %*% W1 + matrix(b1, nrow = nrow(Xval), ncol = length(b1), byrow = TRUE) #Compute Hidden Layer Pre-Activation
   
   # [ToDo] Evaluate error rate (in %) when
   # comparing scores-based predictions with true yval
