@@ -28,6 +28,8 @@ LRMultiClass <- function(X,
   p <- ncol(X) # save variable of ncols as p, number of predictors
   ntest <- nrow(Xt) # save variable of nrows of Xtest as ntest (num obs of Xtest)
   K <- length(unique(y)) #number of class labels
+  tX <- t(X) # compute transpose of X once to be accessed
+  X <- as.matrix(X)
   ## Check the supplied parameters as described. You can assume that X, Xt are matrices; y, yt are vectors; and numIter, eta, lambda are scalars. You can assume that beta_init is either NULL (default) or a matrix.
   ###################################
   # Check that the first column of X and Xt are 1s, if not - display appropriate message and stop execution.
