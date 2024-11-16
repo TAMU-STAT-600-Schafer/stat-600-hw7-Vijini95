@@ -217,6 +217,12 @@ NN_train <- function(X,
       # Perform one pass to get loss, error, and gradients
       out = one_pass(X_batch, y_batch, length(unique(y)), W1, b1, W2, b2, lambda)
       
+      # Update the weights and biases using SGD
+      W1 = W1 - rate * out$grads$dW1
+      b1 = b1 - rate * out$grads$db1
+      W2 = W2 - rate * out$grads$dW2
+      b2 = b2 - rate * out$grads$db2
+      
     # [ToDo] In the end of epoch, evaluate
     # - average training error across batches
     # - validation error using evaluate_error function
