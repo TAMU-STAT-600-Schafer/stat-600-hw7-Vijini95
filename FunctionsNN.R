@@ -222,10 +222,19 @@ NN_train <- function(X,
       b1 = b1 - rate * out$grads$db1
       W2 = W2 - rate * out$grads$dW2
       b2 = b2 - rate * out$grads$db2
-      
+      # Accumulate loss and error over batches
+      total_loss = total_loss + out$loss
+      total_error = total_error + out$error
+    }
     # [ToDo] In the end of epoch, evaluate
     # - average training error across batches
     # - validation error using evaluate_error function
+    # Compute average training error over all batches in this epoch
+    avg_train_error = total_error / nBatch
+    error[i] = avg_train_error
+    # Evaluate validation error at the end of the epoch
+    error_val[i] = evaluate_error(Xval, yval, W1, b1, W2, b2)
+    
   }
   # Return end result
   return(list(
