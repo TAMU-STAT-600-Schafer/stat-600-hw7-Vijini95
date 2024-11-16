@@ -138,9 +138,15 @@ one_pass <- function(X, y, K, W1, b1, W2, b2, lambda) {
 # b2 - a vector of size K of intercepts
 evaluate_error <- function(Xval, yval, W1, b1, W2, b2) {
   # [ToDo] Forward pass to get scores on validation data
-  Z1_val <- Xval %*% W1 + matrix(b1, nrow = nrow(Xval), ncol = length(b1), byrow = TRUE) #Compute Hidden Layer Pre-Activation
+  Z1_val <- Xval %*% W1 + matrix(b1,
+                                 nrow = nrow(Xval),
+                                 ncol = length(b1),
+                                 byrow = TRUE) #Compute Hidden Layer Pre-Activation
   A1_val <- pmax(0, Z1_val) #Apply ReLU Activation to Hidden Layer
-  scores_val <- A1_val %*% W2 + matrix(b2, nrow = nrow(A1_val), ncol = length(b2), byrow = TRUE) #Compute Output Layer Scores
+  scores_val <- A1_val %*% W2 + matrix(b2,
+                                       nrow = nrow(A1_val),
+                                       ncol = length(b2),
+                                       byrow = TRUE) #Compute Output Layer Scores
   
   # [ToDo] Evaluate error rate (in %) when
   # comparing scores-based predictions with true yval
@@ -181,7 +187,13 @@ NN_train <- function(X,
   
   # [ToDo] Initialize b1, b2, W1, W2 using initialize_bw with seed as seed,
   # and determine any necessary inputs from supplied ones
-  params <- initialize_bw(p = ncol(X), hidden_p = hidden_p, K = length(unique(y)), scale = scale, seed = seed)
+  params <- initialize_bw(
+    p = ncol(X),
+    hidden_p = hidden_p,
+    K = length(unique(y)),
+    scale = scale,
+    seed = seed
+  )
   W1 <- params$W1
   b1 <- params$b1
   W2 <- params$W2
