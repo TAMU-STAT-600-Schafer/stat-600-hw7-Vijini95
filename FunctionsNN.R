@@ -214,6 +214,9 @@ NN_train <- function(X,
       X_batch = X[batch_indices, , drop = FALSE]
       y_batch = y[batch_indices]
       
+      # Perform one pass to get loss, error, and gradients
+      out = one_pass(X_batch, y_batch, length(unique(y)), W1, b1, W2, b2, lambda)
+      
     # [ToDo] In the end of epoch, evaluate
     # - average training error across batches
     # - validation error using evaluate_error function
