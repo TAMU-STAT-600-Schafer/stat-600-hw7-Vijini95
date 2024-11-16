@@ -181,6 +181,11 @@ NN_train <- function(X,
   
   # [ToDo] Initialize b1, b2, W1, W2 using initialize_bw with seed as seed,
   # and determine any necessary inputs from supplied ones
+  params <- initialize_bw(p = ncol(X), hidden_p = hidden_p, K = length(unique(y)), scale = scale, seed = seed)
+  W1 <- params$W1
+  b1 <- params$b1
+  W2 <- params$W2
+  b2 <- params$b2
   
   # Initialize storage for error to monitor convergence
   error = rep(NA, nEpoch)
@@ -196,6 +201,19 @@ NN_train <- function(X,
     #  - do one_pass to determine current error and gradients
     #  - perform SGD step to update the weights and intercepts
     
+    # Initialize variables to accumulate loss and error over batches
+    total_loss = 0
+    total_error = 0
+    
+    # Loop over each batch
+    for (batch in 1:nBatch) {
+      # Extract indices for the current batch
+      batch_indices = which(batchids == batch)
+      
+      # Get the mini-batch data
+      X_batch = X[batch_indices, , drop = FALSE]
+      y_batch = y[batch_indices]
+      
     # [ToDo] In the end of epoch, evaluate
     # - average training error across batches
     # - validation error using evaluate_error function
