@@ -148,12 +148,23 @@ evaluate_error <- function(Xval, yval, W1, b1, W2, b2){
 NN_train <- function(X, y, Xval, yval, lambda = 0.01,
                      rate = 0.01, mbatch = 20, nEpoch = 100,
                      hidden_p = 20, scale = 1e-3, seed = 12345){
+  
+  # Set seed for reproducibility
+  set.seed(seed)
+  
   # Get sample size and total number of batches
   n = length(y)
   nBatch = floor(n/mbatch)
+  p <- ncol(X)
+  K <- length(unique(y))  # Assuming y from 0 to K-1
   
   # [ToDo] Initialize b1, b2, W1, W2 using initialize_bw with seed as seed,
   # and determine any necessary inputs from supplied ones
+  params <- initialize_bw(p, hidden_p, K, scale = scale)
+  W1 <- params$W1
+  b1 <- params$b1
+  W2 <- params$W2
+  b2 <- params$b2
   
   # Initialize storage for error to monitor convergence
   error = rep(NA, nEpoch)
@@ -165,13 +176,40 @@ NN_train <- function(X, y, Xval, yval, lambda = 0.01,
   for (i in 1:nEpoch){
     # Allocate bathes
     batchids = sample(rep(1:nBatch, length.out = n), size = n)
+    
+    batch_errors <- numeric(nBatch)
     # [ToDo] For each batch
     #  - do one_pass to determine current error and gradients
     #  - perform SGD step to update the weights and intercepts
+    for (batch in 1:nBatch){
+      # Select batch data
+      X_batch <- X[batchids == batch, , drop = FALSE]
+      y_batch <- y[batchids == batch]
+      
+      # Perform one pass
+      out <- one_pass(X_batch, y_batch, K, W1, b1, W2, b2, lambda)
+      
+      # Get gradients
+      grads <- out$grads
+      
+      # Update weights and biases (SGD step)
+      W1 <- W1 - rate * grads$dW1
+      b1 <- b1 - rate * grads$db1
+      W2 <- W2 - rate * grads$dW2
+      b2 <- b2 - rate * grads$db2
+      
+      # Store error for batch
+      batch_errors[batch] <- out$error
+    }
     
     # [ToDo] In the end of epoch, evaluate
     # - average training error across batches
     # - validation error using evaluate_error function
+    # Average training error across batches
+    error[i] <- mean(batch_errors)
+    
+    # Validation error
+    error_val[i] <- evaluate_error(Xval, yval, W1, b1, W2, b2)
   }
   # Return end result
   return(list(error = error, error_val = error_val, params =  list(W1 = W1, b1 = b1, W2 = W2, b2 = b2)))
