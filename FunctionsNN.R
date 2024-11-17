@@ -116,9 +116,17 @@ one_pass <- function(X, y, K, W1, b1, W2, b2, lambda){
 # b2 - a vector of size K of intercepts
 evaluate_error <- function(Xval, yval, W1, b1, W2, b2){
   # [ToDo] Forward pass to get scores on validation data
+  hidden_input <- Xval %*% W1
+  hidden_input <- sweep(hidden_input, 2, b1, '+')
+  hidden_output <- pmax(0, hidden_input)
+  
+  scores <- hidden_output %*% W2
+  scores <- sweep(scores, 2, b2, '+')
   
   # [ToDo] Evaluate error rate (in %) when 
   # comparing scores-based predictions with true yval
+  predicted_class <- apply(scores, 1, which.max) - 1  # Adjust to 0-based indexing
+  error <- 100 * mean(predicted_class != yval)
   
   return(error)
 }
