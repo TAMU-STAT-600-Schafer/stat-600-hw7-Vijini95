@@ -70,11 +70,15 @@ one_pass <- function(X, y, K, W1, b1, W2, b2, lambda){
   
   # [To Do] Forward pass
   # From input to hidden 
+  hidden_input <- X %*% W1
+  hidden_input <- sweep(hidden_input, 2, b1, '+')
   
   # ReLU
+  hidden_output <- pmax(0, hidden_input)
   
   # From hidden to output scores
-  
+  scores <- hidden_output %*% W2
+  scores <- sweep(scores, 2, b2, '+')
   
   # [ToDo] Backward pass
   # Get loss, error, gradient at current scores using loss_grad_scores function
