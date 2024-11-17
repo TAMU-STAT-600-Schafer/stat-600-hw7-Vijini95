@@ -1,7 +1,9 @@
 # Load the data
 
 # Training data
-letter_train <- read.table("Data/letter-train.txt", header = F, colClasses = "numeric")
+letter_train <- read.table("Data/letter-train.txt",
+                           header = F,
+                           colClasses = "numeric")
 Y <- letter_train[, 1]
 X <- as.matrix(letter_train[, -1])
 
@@ -13,7 +15,9 @@ Ytrain = Y[-id_val]
 Xtrain = X[-id_val, ]
 
 # Testing data
-letter_test <- read.table("Data/letter-test.txt", header = F, colClasses = "numeric")
+letter_test <- read.table("Data/letter-test.txt",
+                          header = F,
+                          colClasses = "numeric")
 Yt <- letter_test[, 1]
 Xt <- as.matrix(letter_test[, -1])
 
@@ -29,7 +33,15 @@ Xinter <- cbind(rep(1, nrow(Xtrain)), Xtrain)
 Xtinter <- cbind(rep(1, nrow(Xt)), Xt)
 
 #  Apply LR (note that here lambda is not on the same scale as in NN due to scaling by training size)
-out <- LRMultiClass(Xinter, Ytrain, Xtinter, Yt, lambda = 1, numIter = 150, eta = 0.1)
+out <- LRMultiClass(
+  Xinter,
+  Ytrain,
+  Xtinter,
+  Yt,
+  lambda = 1,
+  numIter = 150,
+  eta = 0.1
+)
 plot(out$objective, type = 'o')
 plot(out$error_train, type = 'o') # around 19.5 if keep training
 plot(out$error_test, type = 'o') # around 25 if keep training
@@ -38,26 +50,44 @@ out$error_train #19.77778
 out$error_test  #25.23333
 
 # Apply neural network training with default given parameters
-out2 = NN_train(Xtrain, Ytrain, Xval, Yval, lambda = 0.001,
-                rate = 0.1, mbatch = 50, nEpoch = 150,
-                hidden_p = 100, scale = 1e-3, seed = 12345)
+out2 = NN_train(
+  Xtrain,
+  Ytrain,
+  Xval,
+  Yval,
+  lambda = 0.001,
+  rate = 0.1,
+  mbatch = 50,
+  nEpoch = 150,
+  hidden_p = 100,
+  scale = 1e-3,
+  seed = 12345
+)
 plot(1:length(out2$error), out2$error, ylim = c(0, 70))
 lines(1:length(out2$error_val), out2$error_val, col = "red")
 
 # Evaluate error on testing data
-test_error = evaluate_error(Xt, Yt, out2$params$W1, out2$params$b1, out2$params$W2, out2$params$b2)
+test_error = evaluate_error(Xt,
+                            Yt,
+                            out2$params$W1,
+                            out2$params$b1,
+                            out2$params$W2,
+                            out2$params$b2)
 test_error # 16.1 #I obtained 15.68333
 
 # Evaluate error on training data
-training_error = evaluate_error(X, Y, out2$params$W1, out2$params$b1, out2$params$W2, out2$params$b2)
+training_error = evaluate_error(X,
+                                Y,
+                                out2$params$W1,
+                                out2$params$b1,
+                                out2$params$W2,
+                                out2$params$b2)
 training_error #I obtained 6.45
 
 library(microbenchmark)
-timings <- microbenchmark(out <- LRMultiClass(Xinter, Ytrain, Xtinter, Yt, lambda = 1, numIter = 150, eta = 0.1)
-,out2 <- NN_train(Xtrain, Ytrain, Xval, Yval, lambda = 0.001,
-                 rate = 0.1, mbatch = 50, nEpoch = 150,
-                 hidden_p = 100, scale = 1e-3, seed = 12345), times = 10)
+timings <- microbenchmark(out <- LRMultiClass(Xinter, Ytrain, Xtinter, Yt, lambda = 1, numIter = 150, eta = 0.1),
+  out2 <- NN_train(Xtrain, Ytrain, Xval, Yval, lambda = 0.001, rate = 0.1, mbatch = 50, nEpoch = 150, hidden_p = 100, scale = 1e-3, seed = 12345), times = 10)
+timings
 
 # [ToDo] Try changing the parameters above to obtain a better performance,
 # this will likely take several trials
-
