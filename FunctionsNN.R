@@ -29,9 +29,18 @@ initialize_bw <- function(p, hidden_p, K, scale = 1e-3, seed = 12345){
 # y - a vector of size n of class labels, from 0 to K-1
 # K - number of classes
 loss_grad_scores <- function(y, scores, K){
+  n <- nrow(scores)
+  
+  # Compute probabilities using softmax
+  exp_scores <- exp(scores)
+  sum_exp_scores <- rowSums(exp_scores)
+  probs <- exp_scores / sum_exp_scores
   
   # [ToDo] Calculate loss when lambda = 0
-  # loss = ...
+  y_indices <- y + 1  # Adjust to 1-based indexing in R
+  correct_logprobs <- -log(probs[cbind(1:n, y_indices)])
+  data_loss <- sum(correct_logprobs) / n
+  loss <- data_loss  # Since lambda = 0
   
   # [ToDo] Calculate misclassification error rate (%)
   # when predicting class labels using scores versus true y
