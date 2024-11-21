@@ -34,8 +34,13 @@ y_train <- y[train_indices]
 
 X_test <- X[test_indices, ]
 y_test <- y[test_indices]
+
+id_val = 100:200
+Yval = y[id_val]
+Xval = X[id_val, ]
+
 result1 <- LRMultiClass(X_train, y_train, X_test, y_test, numIter = 10, eta = 0.1, lambda = 1)
-out2 = NN_train(
+out21 = NN_train(
   Xtrain,
   Ytrain,
   Xval,
@@ -48,4 +53,3 @@ out2 = NN_train(
   scale = 1e-3,
   seed = 12345
 )
-out2
