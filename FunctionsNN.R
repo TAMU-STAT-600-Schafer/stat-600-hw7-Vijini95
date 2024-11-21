@@ -117,17 +117,19 @@ one_pass <- function(X, y, K, W1, b1, W2, b2, lambda) {
   grad <- out$grad  # n x K
   
   # Get gradient for 2nd layer W2, b2 (use lambda as needed)
-  dW2 <- t(hidden_output) %*% grad + lambda * W2  # h x K
+  #dW2 <- t(hidden_output) %*% grad + lambda * W2  # h x K
+  dW2 <- crossprod(hidden_output, grad) + lambda * W2
   db2 <- colSums(grad)  # length K
   
   # Get gradient for hidden, and 1st layer W1, b1 (use lambda as needed)
-  dhidden <- grad %*% t(W2)  # n x h
-  
+  #dhidden <- grad %*% t(W2)  # n x h
+  dhidden <- tcrossprod(grad, W2)
   # Backpropagate through ReLU
   dhidden[hidden_input <= 0] <- 0
   
   # Get gradient for 1st layer W1, b1 (use lambda as needed)
-  dW1 <- t(X) %*% dhidden + lambda * W1  # p x h
+  #dW1 <- t(X) %*% dhidden + lambda * W1  # p x h
+  dW1 <- crossprod(X, dhidden) + lambda * W1
   db1 <- colSums(dhidden)  # length h
   
   # Return output (loss and error from forward pass,
