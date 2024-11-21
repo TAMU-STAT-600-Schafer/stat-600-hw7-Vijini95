@@ -113,6 +113,9 @@ test_error1 = evaluate_error(Xt,
                              out3$params$b2)
 test_error1 #28.45
 
+plot(1:length(out3$error), out3$error, ylim = c(0, 70))
+lines(1:length(out3$error_val), out3$error_val, col = "blue")
+
 #set lambda = 0.0001
 out4 = NN_train(
   Xtrain,
@@ -135,6 +138,9 @@ test_error2 = evaluate_error(Xt,
                              out4$params$b2)
 test_error2 #14.56667 (when lambda is small, error is small)
 
+plot(1:length(out4$error), out4$error, ylim = c(0, 70))
+lines(1:length(out4$error_val), out4$error_val, col = "blue")
+
 #set rate = 0.01, lambda = 0.0001
 out5 = NN_train(
   Xtrain,
@@ -156,6 +162,9 @@ test_error3 = evaluate_error(Xt,
                              out5$params$W2,
                              out5$params$b2)
 test_error3 #27.44444
+plot(1:length(out5$error), out5$error, ylim = c(0, 70))
+lines(1:length(out5$error_val), out5$error_val, col = "blue")
+
 
 #set rate = 0.5, lambda = 0.001
 out6 = NN_train(
@@ -179,6 +188,9 @@ test_error4 = evaluate_error(Xt,
                              out6$params$b2)
 test_error4 #96.37778
 
+plot(1:length(out6$error), out6$error, ylim = c(0, 70))
+lines(1:length(out6$error_val), out6$error_val, col = "blue")
+
 #set rate = 0.11, lambda = 0.001
 out7 = NN_train(
   Xtrain,
@@ -200,6 +212,9 @@ test_error5 = evaluate_error(Xt,
                              out7$params$W2,
                              out7$params$b2)
 test_error5 #17.11667 (If rate is different from 0.1, then error is getting large)
+
+plot(1:length(out7$error), out7$error, ylim = c(0, 70))
+lines(1:length(out7$error_val), out7$error_val, col = "blue")
 
 #set mbatch = 100
 out8 = NN_train(
@@ -223,6 +238,9 @@ test_error6 = evaluate_error(Xt,
                              out8$params$b2)
 test_error6 #18.70556
 
+plot(1:length(out8$error), out8$error, ylim = c(0, 70))
+lines(1:length(out8$error_val), out8$error_val, col = "blue")
+
 #set mbatch = 45
 out9 = NN_train(
   Xtrain,
@@ -243,7 +261,10 @@ test_error7 = evaluate_error(Xt,
                              out9$params$b1,
                              out9$params$W2,
                              out9$params$b2)
-test_error7 #18.91111 (If mbatch is different from 50, then error is getting large)
+test_error7 #17.97222 (If mbatch is different from 50, then error is getting large)
+
+plot(1:length(out9$error), out9$error, ylim = c(0, 70))
+lines(1:length(out9$error_val), out9$error_val, col = "blue")
 
 #set nEpoch = 300
 out10 = NN_train(
@@ -267,6 +288,9 @@ test_error8 = evaluate_error(Xt,
                              out10$params$b2)
 test_error8 #29.44444 (If mbatch is different from 50, then error is getting large)
 
+plot(1:length(out10$error), out10$error, ylim = c(0, 70))
+lines(1:length(out10$error_val), out10$error_val, col = "blue")
+
 #set nEpoch = 100
 out11 = NN_train(
   Xtrain,
@@ -288,6 +312,9 @@ test_error9 = evaluate_error(Xt,
                              out11$params$W2,
                              out11$params$b2)
 test_error9 #16.85556 (If mbatch is different from 150, then error is getting large)
+
+plot(1:length(out11$error), out11$error, ylim = c(0, 70))
+lines(1:length(out11$error_val), out11$error_val, col = "blue")
 
 #set hidden_p = 200
 out12 = NN_train(
@@ -311,6 +338,9 @@ test_error10 = evaluate_error(Xt,
                               out12$params$b2)
 test_error10 #15.13889 (If mbatch is different from 150, then error is getting large)
 
+plot(1:length(out12$error), out12$error, ylim = c(0, 70))
+lines(1:length(out12$error_val), out12$error_val, col = "blue")
+
 #set hidden_p = 1000
 out13 = NN_train(
   Xtrain,
@@ -332,6 +362,9 @@ test_error11 = evaluate_error(Xt,
                               out13$params$W2,
                               out13$params$b2)
 test_error11 #13.44444 (If hidden_p is increasing, then error is getting small)
+
+plot(1:length(out13$error), out13$error, ylim = c(0, 70))
+lines(1:length(out13$error_val), out13$error_val, col = "blue")
 
 #set scale = 1e-2
 out14 = NN_train(
@@ -355,6 +388,9 @@ test_error12 = evaluate_error(Xt,
                               out14$params$b2)
 test_error12 #15.06111
 
+plot(1:length(out14$error), out14$error, ylim = c(0, 70))
+lines(1:length(out14$error_val), out14$error_val, col = "blue")
+
 #set scale = 1e-5
 out15 = NN_train(
   Xtrain,
@@ -376,3 +412,6 @@ test_error13 = evaluate_error(Xt,
                               out15$params$W2,
                               out15$params$b2)
 test_error13 #16.48889 (If scale is increasing, then error is getting small)
+
+plot(1:length(out15$error), out15$error, ylim = c(0, 70))
+lines(1:length(out15$error_val), out15$error_val, col = "blue")
