@@ -73,11 +73,13 @@ set.seed(42)
 n_samples <- 50
 
 # Generate data for Class 0
-X0 <- cbind(rnorm(n_samples, mean = 2, sd = 0.5), rnorm(n_samples, mean = 2, sd = 0.5))
+X0 <- cbind(rnorm(n_samples, mean = 2, sd = 0.5),
+            rnorm(n_samples, mean = 2, sd = 0.5))
 y0 <- rep(0, n_samples)
 
 # Generate data for Class 1
-X1 <- cbind(rnorm(n_samples, mean = -2, sd = 0.5), rnorm(n_samples, mean = -2, sd = 0.5))
+X1 <- cbind(rnorm(n_samples, mean = -2, sd = 0.5),
+            rnorm(n_samples, mean = -2, sd = 0.5))
 y1 <- rep(1, n_samples)
 
 # Combine the data
@@ -111,8 +113,8 @@ out22 <- NN_train(
   lambda = 0.001,
   rate = 0.1,
   mbatch = 10,
-  nEpoch = 50,  
-  hidden_p = 10,  
+  nEpoch = 50,
+  hidden_p = 10,
   scale = 1e-3,
   seed = 12345
 )
