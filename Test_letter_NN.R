@@ -85,8 +85,31 @@ training_error = evaluate_error(X,
 training_error #I obtained 6.45
 
 library(microbenchmark)
-timings <- microbenchmark(out <- LRMultiClass(Xinter, Ytrain, Xtinter, Yt, lambda = 1, numIter = 150, eta = 0.1),
-  out2 <- NN_train(Xtrain, Ytrain, Xval, Yval, lambda = 0.001, rate = 0.1, mbatch = 50, nEpoch = 150, hidden_p = 100, scale = 1e-3, seed = 12345), times = 10)
+timings <- microbenchmark(
+  out <- LRMultiClass(
+    Xinter,
+    Ytrain,
+    Xtinter,
+    Yt,
+    lambda = 1,
+    numIter = 150,
+    eta = 0.1
+  ),
+  out2 <- NN_train(
+    Xtrain,
+    Ytrain,
+    Xval,
+    Yval,
+    lambda = 0.001,
+    rate = 0.1,
+    mbatch = 50,
+    nEpoch = 150,
+    hidden_p = 100,
+    scale = 1e-3,
+    seed = 12345
+  ),
+  times = 10
+)
 timings
 
 # [ToDo] Try changing the parameters above to obtain a better performance,
