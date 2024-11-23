@@ -86,15 +86,6 @@ training_error #I obtained 6.45
 
 library(microbenchmark)
 timings <- microbenchmark(
-  out <- LRMultiClass(
-    Xinter,
-    Ytrain,
-    Xtinter,
-    Yt,
-    lambda = 1,
-    numIter = 150,
-    eta = 0.1
-  ),
   out2 <- NN_train(
     Xtrain,
     Ytrain,
@@ -110,7 +101,7 @@ timings <- microbenchmark(
   ),
   times = 10
 )
-timings
+timings  
 
 # [ToDo] Try changing the parameters above to obtain a better performance,
 # this will likely take several trials
