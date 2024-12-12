@@ -18,10 +18,10 @@ initialize_bw <- function(p,
   set.seed(seed)
   W1 <- matrix(rnorm(p * hidden_p, mean = 0, sd = scale),
                nrow = p,
-               ncol = hidden_p) # Input to hidden layer weights
+               ncol = hidden_p) 
   W2 <- matrix(rnorm(hidden_p * K, mean = 0, sd = scale),
                nrow = hidden_p,
-               ncol = K) # Hidden to output layer weights
+               ncol = K) 
   
   # Return
   return(list(
@@ -91,7 +91,6 @@ one_pass <- function(X, y, K, W1, b1, W2, b2, lambda) {
   
   # From hidden to output scores
   scores <- hidden_output %*% W2 + matrix(b2, n, K, byrow = T)
-  
   
   # [ToDo] Backward pass
   # Get loss, error, gradient at current scores using loss_grad_scores function
