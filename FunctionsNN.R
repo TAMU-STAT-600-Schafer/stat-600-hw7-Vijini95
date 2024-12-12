@@ -105,10 +105,21 @@ one_pass <- function(X, y, K, W1, b1, W2, b2, lambda){
 # W2 - a h by K matrix of weights
 # b2 - a vector of size K of intercepts
 evaluate_error <- function(Xval, yval, W1, b1, W2, b2){
+  nval <- length(yval)
+  yval <- yval + 1
   # [ToDo] Forward pass to get scores on validation data
+  hidden_input <- Xval %*% W1 + matrix(b1, nval, length(b1), byrow = T)
+  hidden_output <- pmax(hidden_input, 0)
+  scores <- hidden_output %*% W2 + matrix(b2, nval, length(b2), byrow = T)
+  
+  #P_k calculation
+  exp_scores <- exp(scores)
+  sum_exp_scores <- rowSums(exp_scores)
+  probs <- exp_scores / sum_exp_scores
   
   # [ToDo] Evaluate error rate (in %) when 
   # comparing scores-based predictions with true yval
+  error <- 100 * (sum(yval != max.col(probs, ties.method = "first")) / nval)
   
   return(error)
 }
