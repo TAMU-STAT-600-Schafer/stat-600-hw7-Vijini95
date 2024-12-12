@@ -26,17 +26,26 @@ initialize_bw <- function(p, hidden_p, K, scale = 1e-3, seed = 12345){
 # y - a vector of size n of class labels, from 0 to K-1
 # K - number of classes
 loss_grad_scores <- function(y, scores, K){
+  n <- length(y) #dimension
+  y <- y + 1
+  
+  # Compute probabilities using softmax
+  exp_scores <- exp(scores)
+  sum_exp_scores <- rowSums(exp_scores)
+  probs <- exp_scores / sum_exp_scores
+  
+  Ymat <- 0 + outer(y, 1:K, function(a, b) a == b)
   
   # [ToDo] Calculate loss when lambda = 0
-  # loss = ...
+  loss <- -sum(Ymat * log(probs)) / n
   
   # [ToDo] Calculate misclassification error rate (%)
   # when predicting class labels using scores versus true y
-  # error = ...
+  error <- 100 * (sum(y != max.col(probs, ties.method = "first")) / n)
   
   # [ToDo] Calculate gradient of loss with respect to scores (output)
   # when lambda = 0
-  # grad = ...
+  grad <- (-Ymat + probs) / n #Efficient gradient calculation
   
   # Return loss, gradient and misclassification error on training (in %)
   return(list(loss = loss, grad = grad, error = error))
